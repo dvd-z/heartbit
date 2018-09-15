@@ -39,7 +39,7 @@ app.use(bodyParser.json());
 app.post('/fitbit', (req, res) => {
   console.log("req body:", req.body)
   var datetime = new Date();
-  globalvar.push(req.body)
+  globalvar.push(req.body['body'])
   console.log(globalvar)
   console.log(datetime);
   // console.log(util.inspect(req.body, false, null))

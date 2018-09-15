@@ -9,7 +9,8 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "pm2": "^2.10.4",
     "request": "*",
-    "util": "^0.11.0"
+    "util": "^0.11.0",
+    "websocket": "^1.0.26"
   },
   "scripts": {
     "start": "react-scripts start",

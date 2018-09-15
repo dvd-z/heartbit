@@ -1,10 +1,7 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var contact_confirmation = require('./lib/contact_confirmation.js');
-var contact_information = require('./lib/contact_information.js');
-var contact_register = require('./lib/contact_register.js')
-var mailchimp = require('./lib/mailchimp.js')
+
 
 const bodyParser = require('body-parser');
 const util = require('util')

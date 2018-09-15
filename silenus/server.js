@@ -10,6 +10,8 @@ var router = express.Router();
 
 var app = express()
 
+globalvar = []
+
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -37,6 +39,8 @@ app.use(bodyParser.json());
 app.post('/fitbit', (req, res) => {
   console.log("req body:", req.body)
   var datetime = new Date();
+  globalvar.append(req.body)
+  console.log(globalvar)
   console.log(datetime);
   // console.log(util.inspect(req.body, false, null))
 

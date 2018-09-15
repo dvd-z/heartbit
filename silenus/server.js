@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-
+var ema = require('exponential-moving-average');
 
 const bodyParser = require('body-parser');
 const util = require('util')
@@ -11,6 +11,7 @@ var router = express.Router();
 var app = express()
 
 globalvar = []
+heartRateSmooth = [];
 
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -31,17 +32,24 @@ var logger = function(req, res, next) {
 }
 
 
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
 
 app.post('/fitbit', (req, res) => {
-  console.log("req body:", req.body)
+  var checkHeartRate = function() {
+    temp = globalvar.slice(Math.max(globalvar.length - 20, 1))
+    resp = ema(temp, Math.min(globalvar.length, 20))
+    return parseInt(resp.slice(-1)[0]) > 100;
+  }
+  // console.log("req body:", req.body)
   var datetime = new Date();
-  globalvar.push(req.body['body'])
-  console.log(globalvar)
-  console.log(datetime);
+  globalvar.push(...req.body['body'])
+  console.log(checkHeartRate());
+  // console.log(globalvar)
+  // console.log(datetime);
   // console.log(util.inspect(req.body, false, null))
 
   res.json({"hello": "world! This is the fitbit endpoint"});

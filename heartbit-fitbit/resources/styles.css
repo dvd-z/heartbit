@@ -1,12 +1,21 @@
 .background {
-  viewport-fill: fb-cyan;
+  viewport-fill: fb-red;
 }
 
-#demotext {
+text {
   fill: black;
-  font-size: 32;
-  font-family: System-Regular;
-  font-weight: bold;
   text-anchor: middle;
-  text-length: 99;
+  x: 50%;
+}
+
+#title {
+  font-size: 40;
+  font-family: Colfax-Regular;
+  y: 40%;
+}
+
+#bpm {
+  font-size: 96;
+  font-family: Colfax-Medium;
+  y: 73%;
 }

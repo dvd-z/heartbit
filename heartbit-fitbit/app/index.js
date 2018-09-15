@@ -9,7 +9,7 @@ let heartRates = [];
 hrm.onreading = function() {
   // Peek the current sensor values
   console.log("Current heart rate: " + hrm.heartRate);
-  document.getElementById("heartbeatText").textContent = hrm.heartRate;
+  document.getElementById("bpm").textContent = hrm.heartRate;
   heartRates.push(hrm.heartRate)
   // POST every 5 seconds
   if (hrm.timestamp - lastSent >= 5000) {
@@ -22,4 +22,5 @@ hrm.onreading = function() {
 }
 
 // Begin monitoring the sensor
+lastSent = hrm.timestamp;
 hrm.start();

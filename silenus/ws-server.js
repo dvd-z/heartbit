@@ -26,12 +26,13 @@ function originIsAllowed(origin) {
 }
 
 wsServer.on('request', function(request) {
-    if (!originIsAllowed(request.origin)) {
-      // Make sure we only accept requests from an allowed origin
-      request.reject();
-      console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
-      return;
-    }
+    // if (!originIsAllowed(request.origin)) {
+    //   // Make sure we only accept requests from an allowed origin
+    //   request.reject();
+    //   console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
+    //   return;
+    // }
+    console.log("req", request)
 
     var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
@@ -45,6 +46,7 @@ wsServer.on('request', function(request) {
             connection.sendBytes(message.binaryData);
         }
     });
+
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });

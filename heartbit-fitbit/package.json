@@ -4,7 +4,7 @@
     "appType": "app",
     "appDisplayName": "heartbit",
     "iconFile": "resources/icon.png",
-    "wipeColor": "#8bc34a",
+    "wipeColor": "#e91e63",
     "requestedPermissions": [
       "access_heart_rate",
       "run_background"

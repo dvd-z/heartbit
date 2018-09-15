@@ -40,9 +40,9 @@ app.use(bodyParser.json());
 
 app.post('/fitbit', (req, res) => {
   var checkHeartRate = function() {
-    res = ema(globalvar, Math.min(globalvar.length, 10))
-    console.log(res)
-    return res.slice(-1)[0] > 100;
+    temp = globalvar.slice(Math.max(arr.length - 20, 1))
+    res = ema(temp, Math.min(globalvar.length, 20))
+    return parseInt(res.slice(-1)[0]) > 100;
   }
   // console.log("req body:", req.body)
   var datetime = new Date();

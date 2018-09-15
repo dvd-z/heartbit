@@ -38,25 +38,13 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post('/hook', (req, res) => {
-  console.log("req body:")
+  console.log("req body:", req.body)
   var datetime = new Date();
   console.log(datetime);
   // console.log(util.inspect(req.body, false, null))
 
-  contact_register(req.body.form_response.answers[1].email, function() {
-    console.log(req.body.form_response.answers[1].email +
-      " has successfully registered for inventure")
-  })
+  res.json({"hello": "world"});
 
-  mailchimp(req.body.form_response.answers[1].email, function(err) {
-    if (err !== null) {
-      console.log("error, not added to mailing list")
-    }
-    console.log("mail succesfully sent to mailchimp", req.body.form_response
-      .answers[1].email);
-  })
-
-  res.json(req.body.form_response.answers[1].email);
 });
 
 
@@ -64,30 +52,6 @@ app.post('/hook', (req, res) => {
 app.get('/api/mail', (req, res) => {
   var host = req.headers.host;
   var origin = req.headers.origin
-  console.log("req query", req.query)
-
-  contact_confirmation(req.query.email, function() {
-    console.log("auto response to client succesfully sent");
-
-    contact_information("eddie.ren.2013@gmail.com", req.query.email,
-      req.query.name, req.query.message,
-      function() {
-        console.log("mail succesfully sent to eddie");
-
-        contact_information("malindu@meetinventure.com", req.query.email,
-          req.query.name, req.query.message,
-          function() {
-            console.log("mail succesfully sent to malindu");
-          });
-      });
-
-
-
-  });
-
-
-
-  res.redirect('https://meetinventure.com/contact.html');
 
 
 });

@@ -34,24 +34,35 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.post('/hook', (req, res) => {
+app.post('/fitbit', (req, res) => {
   console.log("req body:", req.body)
   var datetime = new Date();
   console.log(datetime);
   // console.log(util.inspect(req.body, false, null))
 
-  res.json({"hello": "world"});
+  res.json({"hello": "world! This is the fitbit endpoint"});
+});
 
+app.post('/openpose', (req, res) => {
+  console.log("req body:", req.body)
+  var datetime = new Date();
+  console.log(datetime);
+  // console.log(util.inspect(req.body, false, null))
+
+  res.json({"hello": "world! This is the openpose endpoint"});
 });
 
 
+app.post('/other', (req, res) => {
+  console.log("req body:", req.body)
+  var datetime = new Date();
+  console.log(datetime);
+  // console.log(util.inspect(req.body, false, null))
 
-app.get('/api/mail', (req, res) => {
-  var host = req.headers.host;
-  var origin = req.headers.origin
-
-
+  res.json({"hello": "world! This is the other endpoint"});
 });
+
+
 
 app.use(logger);
 app.use(express.static(path.join(__dirname, 'build')));

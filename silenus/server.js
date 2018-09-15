@@ -40,7 +40,7 @@ app.use(bodyParser.json());
 
 app.post('/fitbit', (req, res) => {
   var checkHeartRate = function() {
-    res = ema(globalvar, Math.min(heartRates.length, 10))
+    res = ema(globalvar, Math.min(globalvar.length, 10))
     console.log(res)
     return res.slice(-1)[0] > 100;
   }

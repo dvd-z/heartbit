@@ -42,7 +42,7 @@ app.post('/fitbit', (req, res) => {
   var checkHeartRate = function() {
     temp = globalvar.slice(Math.max(globalvar.length - 20, 1))
     resp = ema(temp, Math.min(globalvar.length, 20))
-    return parseInt(res.slice(-1)[0]) > 100;
+    return parseInt(resp.slice(-1)[0]) > 100;
   }
   // console.log("req body:", req.body)
   var datetime = new Date();

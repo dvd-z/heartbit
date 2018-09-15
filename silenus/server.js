@@ -31,12 +31,7 @@ var logger = function(req, res, next) {
   next();
 }
 
-var checkHeartRate = function() {
-  var filteredHeartRate = function(heartRates) {
-    return ema(heartRates, Math.min(heartRates.length, 10));
-  }
-  return filteredHeartRate(globalvar).slice(-1)[0] > 100;
-}
+
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -44,6 +39,12 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post('/fitbit', (req, res) => {
+  var checkHeartRate = function() {
+    var filteredHeartRate = function(heartRates) {
+      return ema(heartRates, Math.min(heartRates.length, 10));
+    }
+    return filteredHeartRate(globalvar).slice(-1)[0] > 100;
+  }
   // console.log("req body:", req.body)
   var datetime = new Date();
   globalvar.push(...req.body['body'])

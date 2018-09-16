@@ -398,6 +398,8 @@ class Dashboard extends Component {
     this.subscribe = this.subscribe.bind(this);
 
     this.state = {
+      emotion:0,
+      posture:'Happy',
       dropdownOpen: false,
       radioSelected: 2,
       bodylang:[0],
@@ -476,6 +478,9 @@ class Dashboard extends Component {
   subscribe(timestamp) {
     console.log(timestamp.emotion)
     console.log("ts posture", timestamp.posture)
+    if ((timestamp.emotion) && timestamp.posture) {
+        return
+    }
 
     // console.log("this.body", this.state, timestamp)
     var newbody = this.state.bodylang
@@ -594,6 +599,10 @@ class Dashboard extends Component {
       },
     });
     console.log(this.state.cardChartData2.datasets[0].data)
+    console.log("emotion", this.state.emotion)
+    console.log("posture", this.state.posture)
+
+
   }
 
 
@@ -635,7 +644,7 @@ class Dashboard extends Component {
                   </ButtonDropdown>
                 </ButtonGroup>
                 <div className="text-value">Body Language</div>
-                <div>  Confidence {this.state.posture}</div>
+                <div>  Confidence: {this.state.posture==1 ? "Ready" : "Uncertain"}</div>
               </CardBody>
               <div >
               <div className="chart-wrapper mx-3" style={{ height: '70px', paddingLeft:'5px' }} >
@@ -666,7 +675,7 @@ class Dashboard extends Component {
                   </ButtonDropdown>
                 </ButtonGroup>
                 <div className="text-value">Facial Expression</div>
-                <div>Mood</div>
+                <div>Mood: {this.state.emotion}</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                 <Bar data={this.state.cardChartData4} options={cardChartOpts4} height={70} />

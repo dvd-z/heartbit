@@ -14,10 +14,10 @@ messaging.peerSocket.onmessage = function(e) {
 }
 
 function postHeartrates(heartrates) {
-  fetch(`http://40.76.211.223:3000/fitbit`, {
+  fetch("http://40.76.211.223:3000/fitbit", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json; charset=utf-8"
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(heartrates)
   })

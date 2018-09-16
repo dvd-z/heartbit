@@ -44,13 +44,10 @@ app.post('/fitbit', (req, res) => {
     resp = ema(temp, Math.min(globalvar.length, 20))
     return parseInt(resp.slice(-1)[0]) > 100;
   }
-  // console.log("req body:", req.body)
+
   var datetime = new Date();
-  globalvar.push(...req.body['body'])
+  globalvar.push(req.body.heartrates)
   console.log(checkHeartRate());
-  // console.log(globalvar)
-  // console.log(datetime);
-  // console.log(util.inspect(req.body, false, null))
 
   res.json({"hello": "world! This is the fitbit endpoint"});
 });

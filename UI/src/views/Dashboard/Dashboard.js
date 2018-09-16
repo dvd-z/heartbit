@@ -42,7 +42,7 @@ const cardChartData1 = {
       label: 'My First dataset',
       backgroundColor: brandPrimary,
       borderColor: 'rgba(255,255,255,.55)',
-      data: [65, 59, 84, 84, 51, 55, 40],
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     },
   ],
 };
@@ -304,44 +304,19 @@ function random(min, max) {
 }
 
 var elements = 27;
-var data1 = [];
-var data2 = [];
-var data3 = [];
+var data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-for (var i = 0; i <= elements; i++) {
-  data1.push(random(50, 200));
-  data2.push(random(80, 100));
-  data3.push(65);
-}
-
-const mainChart = {
-  labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+var mainChart = {
+  // labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: 'Heartrates',
       backgroundColor: hexToRgba(brandInfo, 10),
       borderColor: brandInfo,
       pointHoverBackgroundColor: '#fff',
       borderWidth: 2,
-      data: data1,
-    },
-    {
-      label: 'My Second dataset',
-      backgroundColor: 'transparent',
-      borderColor: brandSuccess,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 2,
-      data: data2,
-    },
-    {
-      label: 'My Third dataset',
-      backgroundColor: 'transparent',
-      borderColor: brandDanger,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5],
-      data: data3,
-    },
+      data: data
+    }
   ],
 };
 
@@ -400,10 +375,11 @@ class Dashboard extends Component {
     this.state = {
       emotion:0,
       posture:'Happy',
-      heartrates:123,
+      heartrates: 0,
       dropdownOpen: false,
       radioSelected: 2,
       bodylang:[0],
+      mainChart: mainChart,
       cardChartData2: {
         labels: ['', '', '', '', '', '', '', ''],
         datasets: [
@@ -517,15 +493,36 @@ class Dashboard extends Component {
     }
 
 
-    var realheartrate = this.state.heartrates
+    var realheartrate = this.state.heartrates;
+    console.log("this.state.heartrates: " + this.state.heartrates);
     if (timestamp.heartrates) {
       realheartrate = timestamp.heartrates;
     }
+    data.pop();
+    data.unshift(realheartrate);
+    mainChart.datasets[0].data = data;
+    // mainChart = {
+    //   // labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+    //   datasets: [
+    //     {
+    //       label: 'My First dataset',
+    //       backgroundColor: hexToRgba(brandInfo, 10),
+    //       borderColor: brandInfo,
+    //       pointHoverBackgroundColor: '#fff',
+    //       borderWidth: 2,
+    //       data: data
+    //     }
+    //   ],
+    // };
+    console.log("Updated data!");
+    console.log(data);
+    console.log(realheartrate);
     this.setState({
-      emotion:timestamp.emotion,
-      posture:timestamp.posture,
+      emotion: timestamp.emotion,
+      posture: timestamp.posture,
       heartrates: realheartrate,
       bodylang: newbody,
+      mainChart: mainChart,
       cardChartData2: {
         // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug','','','','','','','','','','',''],
         datasets: [
@@ -707,78 +704,6 @@ class Dashboard extends Component {
           </Col>
         </Row>
 
-        <Row>
-          <Col xs="6" sm="6" lg="3">
-            <Widget03 dataBox={() => ({ variant: 'facebook', friends: '89k', feeds: '459' })} >
-              <div className="chart-wrapper">
-                <Line data={makeSocialBoxData(0)} options={socialChartOpts} height={90} />
-              </div>
-            </Widget03>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <div className="brand-card">
-              <div className="brand-card-header bg-twitter">
-                <i className="fa fa-twitter"></i>
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(1)} options={socialChartOpts} height={90} />
-                </div>
-              </div>
-              <div className="brand-card-body">
-                <div>
-                  <div className="text-value">973k</div>
-                  <div className="text-uppercase text-muted small">followers</div>
-                </div>
-                <div>
-                  <div className="text-value">1.792</div>
-                  <div className="text-uppercase text-muted small">tweets</div>
-                </div>
-              </div>
-            </div>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <div className="brand-card">
-              <div className="brand-card-header bg-linkedin">
-                <i className="fa fa-linkedin"></i>
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(2)} options={socialChartOpts} height={90} />
-                </div>
-              </div>
-              <div className="brand-card-body">
-                <div>
-                  <div className="text-value">500+</div>
-                  <div className="text-uppercase text-muted small">contacts</div>
-                </div>
-                <div>
-                  <div className="text-value">292</div>
-                  <div className="text-uppercase text-muted small">feeds</div>
-                </div>
-              </div>
-            </div>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <div className="brand-card">
-              <div className="brand-card-header bg-google-plus">
-                <i className="fa fa-google-plus"></i>
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(3)} options={socialChartOpts} height={90} />
-                </div>
-              </div>
-              <div className="brand-card-body">
-                <div>
-                  <div className="text-value">894</div>
-                  <div className="text-uppercase text-muted small">followers</div>
-                </div>
-                <div>
-                  <div className="text-value">92</div>
-                  <div className="text-uppercase text-muted small">circles</div>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
 
         {/* <Row>
           <Col>

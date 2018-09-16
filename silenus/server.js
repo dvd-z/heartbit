@@ -72,10 +72,10 @@ app.post('/fitbit', (req, res) => {
   }
 
   var datetime = new Date();
-  globalvar.push(req.body.heartrates)
+  globalvar.push(req.body.heartrates);
   console.log(checkHeartRate());
-  console.log("req body", req.body.heartrates)
-  glob['heartrates'] = req.body.heartrates[0]
+  console.log("req body", req.body.heartrates);
+  glob['heartrates'] = req.body.heartrates[0];
   res.json({"hello": "world! This is the fitbit endpoint"});
 });
 

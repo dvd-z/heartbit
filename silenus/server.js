@@ -1,16 +1,33 @@
 var express = require('express');
 var path = require('path');
 var ema = require('exponential-moving-average');
-var http =require( 'http');
 let app = express();
-
-
+var http = require( 'http').Server(app);
+var io = require('socket.io')(http);
 
 const bodyParser = require('body-parser');
 const util = require('util')
 
 var router = express.Router();
 
+glob = {"emotion": "empty", "posture": "empty"}
+
+io.on('connection', (client) => {
+  console.log("connected")
+  client.on('subscribeToTimer', (interval) => {
+    console.log('client is subscribing to timer with interval ', interval);
+    setInterval(() => {
+      client.emit('timer', glob);
+    }, interval);
+  });
+  client.on('CH01', (x) => {
+    console.log('choi ');
+    // setInterval(() => {
+    //   glob = (Math.round(Math.random()*10))
+    //   client.emit('timer', glob);
+    // }, interval);
+  });
+});
 
 globalvar = []
 heartRateSmooth = [];
@@ -59,6 +76,7 @@ app.post('/openpose', (req, res) => {
   console.log("req body:", req.body)
   var datetime = new Date();
   console.log(datetime);
+  glob[Object.keys(req.body)[0]] = Object.values(req.body)[0]
   // console.log(util.inspect(req.body, false, null))
 
   res.json({"hello": "world! This is the openpose endpoint"});
@@ -83,6 +101,6 @@ app.use(express.static(path.join(__dirname, 'build')));
 // app.use(allowCrossDomain);
 
 
-app.listen(3000, function() {
-  console.log('server stared on port 3000')
+http.listen(8000, function() {
+  console.log('server stared on port 8000')
 });

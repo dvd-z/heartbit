@@ -683,7 +683,7 @@ class Dashboard extends Component {
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">HeartBit</CardTitle>
-                    <div className="small text-muted">Last Beats: {this.state.heartrates}</div>
+                    <div className="large text-muted">Last Beats: {this.state.heartrates}</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>

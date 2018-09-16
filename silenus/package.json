@@ -10,6 +10,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "pm2": "^2.10.4",
     "request": "*",
+    "socket.io": "^2.1.1",
     "util": "^0.11.0",
     "websocket": "^1.0.26",
     "ws": "^6.0.0"

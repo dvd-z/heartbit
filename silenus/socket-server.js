@@ -10,6 +10,8 @@ io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('meme', function(msg){
     console.log('message: ' + msg);
+    socket.emit('meme', msg, msg);
+
   });
 });
 

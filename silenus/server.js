@@ -3,8 +3,7 @@ var path = require('path');
 var ema = require('exponential-moving-average');
 var http =require( 'http');
 let app = express();
-let server = http.Server(app);
-var io = require('socket.io')(server);
+
 
 
 const bodyParser = require('body-parser');
@@ -75,14 +74,7 @@ app.post('/other', (req, res) => {
   res.json({"hello": "world! This is the other endpoint"});
 });
 
-io.on('connection', function (socket) {
-  console.log('socket connect');
-  console.log(socket)
-  socket.emit('news', { hello: 'world' });
-  socket.on('CH01', function (data) {
-    console.log("nice");
-  });
-});
+
 
 
 app.use(logger);

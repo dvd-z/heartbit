@@ -419,7 +419,7 @@ class Dashboard extends Component {
         datasets: [
           {
             label: 'My First dataset',
-            backgroundColor: 'rgba(255,255,255,.3)',
+            backgroundColor: 'rgba(255,0,0,.3)',
             borderColor: 'transparent',
             // data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
           },
@@ -478,28 +478,17 @@ class Dashboard extends Component {
   subscribe(timestamp) {
     console.log(timestamp.emotion)
     console.log("ts posture", timestamp.posture)
-    if ((timestamp.emotion) && timestamp.posture) {
-        return
-    }
+    // if ((timestamp.emotion) && timestamp.posture) {
+    //     return
+    // }
 
     // console.log("this.body", this.state, timestamp)
     var newbody = this.state.bodylang
     console.log("ts posture", timestamp.posture, newbody)
 
-
-    for (var i = 0; i < timestamp.posture.length; i++) {
-      console.log("pushing to loop", timestamp.posture[i], timestamp.posture[i] != "")
-
-        if (timestamp.posture[i] == "") {
-          newbody.push(timestamp.posture[i]);
-          console.log("pushing to newbody", newbody);
-          if (newbody.length > 8) {
-              newbody.shift();
-          }
-        }
-    }
     console.log("newbody", newbody)
 
+    newbody.push(timestamp.posture)
     if (newbody.length > 8) {
         newbody.shift()
     }
@@ -513,6 +502,7 @@ class Dashboard extends Component {
     var color3back = 'transparent';
     var color = ""
     var colorback = ""
+
     console.log(newbody)
     if (timestamp.emotion == "Smile") {
       color = color1;
@@ -547,7 +537,7 @@ class Dashboard extends Component {
         datasets: [
           {
             label: 'My First dataset',
-            backgroundColor: colorback,
+            backgroundColor: 'rgba(255,0,0,.55)',
             borderColor: color,
             // data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
           },
@@ -628,7 +618,7 @@ class Dashboard extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col xs="12" sm="6" lg="6">
-            <Card className="text-white bg-info">
+            <Card className="text-white bg-danger">
               <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
                   <ButtonDropdown id='card1' isOpen={this.state.card1} toggle={() => { this.setState({ card1: !this.state.card1 }); }}>

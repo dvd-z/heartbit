@@ -10,7 +10,7 @@ const util = require('util')
 
 var router = express.Router();
 
-glob = {"emotion": "", "posture": []}
+glob = {"emotion": "", "posture": ""}
 
 io.on('connection', (client) => {
   console.log("connected")
@@ -23,7 +23,7 @@ io.on('connection', (client) => {
 
       client.emit('timer', glob);
       glob['emotion'] = ""
-      glob['posture'] = []
+      glob['posture'] = ""
     }, interval);
   });
   client.on('CH01', (x) => {
@@ -88,9 +88,9 @@ app.post('/openpose', (req, res) => {
     console.log("pushing emotion", req.body.emotion)
   } else if (req.body.posture != ""){
     if (req.body.posture == "good") {
-      glob['posture'].push(1);
+      glob['posture']=1;
     } else {
-      glob['posture'].push(0);
+      glob['posture']=0;
     }
     console.log("pushing posture", req.body.posture)
 

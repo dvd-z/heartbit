@@ -7,23 +7,67 @@ b = [[159.35020446777344, 55.876590728759766, 0.929738461971283], [158.529388427
 a = np.array(a)
 b = np.array(b)
 
-pad = lambda x: np.hstack([x, np.ones((x.shape[0] ,1))])
-unpad = lambda x: x[:, :-1]
+def compare(a, b):
+    pad = lambda x: np.hstack([x, np.ones((x.shape[0] ,1))])
+    unpad = lambda x: x[:, :-1]
 
-padA = pad(a)
-padB = pad(b)
+    padA = pad(a)
+    padB = pad(b)
 
-A, res, rank, s = np.linalg.lstsq(padA, padB, rcond=None)
-A[np.abs(A) < 1e-10] = 0
+    A, res, rank, s = np.linalg.lstsq(padA, padB, rcond=None)
+    A[np.abs(A) < 1e-10] = 0
 
-transform = unpad(np.dot(padA, A))
+    transform = unpad(np.dot(padA, A))
 
-print a
-print b
-print transform
-print A
+    tAndB = np.vstack([b, transform])
+    tAndBMax = np.amax(tAndB, axis = 0)
+    tAndBMin = np.amin(tAndB, axis = 0)
 
-plt.plot(a.T[0], a.T[1], 'o', label="a")
-plt.plot(b.T[0], b.T[1], 'o', label="b")
-plt.plot(transform.T[0], transform.T[1], 'o', label="a on c")
-plt.show()
+    def normalize(a, amax, amin):
+        aNormalized = np.empty(a.shape)
+        for i in range(a.shape[0]):
+            for j in range(a.shape[1]):
+                if (amax[j] != amin[j]):
+                    aNormalized[i,j] = (a[i,j] - amin[j])/(amax[j] - amin[j])
+        return aNormalized
+
+    transformNormalized = normalize(transform, tAndBMax, tAndBMin)
+    bNormalized = normalize(b, tAndBMax, tAndBMin)
+
+    print transformNormalized
+    print bNormalized
+
+    def findDistances(a, b):
+        distances = np.zeros(a.shape[0])
+        for i in range(0, a.shape[0]):
+            distances[i] = np.linalg.norm(a[i,:] - b[i,:])
+        return distances
+
+    def unitVector(vector):
+        return vector / np.linalg.norm(vector)
+
+    def findAnglesBetweenTwoVectors1(v1, v2):
+        v1_u = unitVector(v1)
+        v2_u = unitVector(v2)
+        return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
+
+    def findDifferenceInAngles(a, b):
+        angles = []
+        for i in range(0, a.shape[0]):
+            for j in range(i+1, b.shape[0]):
+                angles.append(findAnglesBetweenTwoVectors1(a[i,:], a[j,:]) - findAnglesBetweenTwoVectors1(b[i,:], b[j,:]))
+        return angles
+    
+    print np.amax(findDifferenceInAngles(bNormalized, transformNormalized))
+    print np.amax(findDistances(bNormalized, transformNormalized))
+    return True
+
+compare(a, b)
+
+# plt.plot(a.T[0], a.T[1], 'o', label="a")
+# plt.plot(bNormalized.T[0], bNormalized.T[1], 'o', label="b")
+# plt.plot(transformNormalized.T[0], transformNormalized.T[1], 'o', label="a on c")
+# plt.show()
+
+        
+

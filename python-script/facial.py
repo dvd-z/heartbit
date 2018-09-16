@@ -1,11 +1,13 @@
 import numpy as np
 import cv2
 from keras.preprocessing import image
+from openpose_webcam import *
+# from websocket import create_connection
 
 #-----------------------------
 #opencv initialization
 
-face_cascade = cv2.CascadeClassifier('/Applications/opencv-3.4.3/data/haarcascades/haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('./data/haarcascade_frontalface_default.xml')
 
 cap = cv2.VideoCapture(0)
 #-----------------------------
@@ -15,12 +17,19 @@ model = model_from_json(open("facial_expression_model_structure.json", "r").read
 model.load_weights('./data/facial_expression_model_weights.h5') #load weights
 
 #-----------------------------
+#socket setup
+
+# ws = create_connection("ws://40.76.211.223:8080/", subprotocols=["echo-protocol"])
+
+#-----------------------------
 
 emotions = ('anxious :(', 'anxious :(', 'anxious :(', 'SMILE :)', 'anxious :(', 'anxious :(', 'neutral')
 
 while(True):
 	ret, img = cap.read()
 	#img = cv2.imread('C:/Users/IS96273/Desktop/hababam.jpg')
+
+	openPoseWebcam(img)
 
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -49,6 +58,7 @@ while(True):
 		
 		#write emotion text above rectangle
 		cv2.putText(img, emotion, (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2)
+		# ws.send(emotion)
 		
 		#process on detected face end
 		#-------------------------

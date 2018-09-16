@@ -5,7 +5,7 @@ from keras.preprocessing import image
 #-----------------------------
 #opencv initialization
 
-face_cascade = cv2.CascadeClassifier('/Applications/opencv-3.4.3/data/haarcascades/haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('./data/haarcascade_frontalface_default.xml')
 
 cap = cv2.VideoCapture(0)
 #-----------------------------
@@ -60,7 +60,7 @@ while(True):
 			#find max indexed array 0: angry, 1:disgust, 2:fear, 3:happy, 4:sad, 5:surprise, 6:neutral
 			max_index = np.argmax(predictions[0])
 			
-			emotion = emotions[max_index]
+			emotion = emotions[max_index] 
 			
 			#write emotion text above rectangle
 			cv2.putText(img, emotion, (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2)

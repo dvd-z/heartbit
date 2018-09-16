@@ -1,3 +1,7 @@
+# Openpose models and build
+openpose
+python-script/images
+
 # Logs
 logs
 *.log

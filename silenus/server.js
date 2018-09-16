@@ -1,14 +1,39 @@
 var express = require('express');
-var app = express();
 var path = require('path');
 var ema = require('exponential-moving-average');
+let app = express();
+var http = require( 'http').Server(app);
+var io = require('socket.io')(http);
 
 const bodyParser = require('body-parser');
 const util = require('util')
 
 var router = express.Router();
 
-var app = express()
+glob = {"emotion": "", "posture": ""}
+
+io.on('connection', (client) => {
+  console.log("connected")
+  client.on('subscribeToTimer', (interval) => {
+    console.log('client is subscribing to timer with interval ', interval);
+    console.log("timer", glob)
+
+    setInterval(() => {
+      console.log("timer", glob)
+
+      client.emit('timer', glob);
+      glob['emotion'] = ""
+      glob['posture'] = ""
+    }, interval);
+  });
+  client.on('CH01', (x) => {
+    console.log('choi ');
+    // setInterval(() => {
+    //   glob = (Math.round(Math.random()*10))
+    //   client.emit('timer', glob);
+    // }, interval);
+  });
+});
 
 globalvar = []
 heartRateSmooth = [];
@@ -41,24 +66,35 @@ app.use(bodyParser.json());
 app.post('/fitbit', (req, res) => {
   var checkHeartRate = function() {
     temp = globalvar.slice(Math.max(globalvar.length - 20, 1))
-    resp = ema(temp, Math.min(globalvar.length, 20))
+    resp = ema(temp, Math.min(temp.length, 20))
     return parseInt(resp.slice(-1)[0]) > 100;
   }
-  // console.log("req body:", req.body)
+
   var datetime = new Date();
-  globalvar.push(...req.body['body'])
+  globalvar.push(req.body.heartrates)
   console.log(checkHeartRate());
-  // console.log(globalvar)
-  // console.log(datetime);
-  // console.log(util.inspect(req.body, false, null))
+  console.log(req.body)
 
   res.json({"hello": "world! This is the fitbit endpoint"});
 });
 
 app.post('/openpose', (req, res) => {
-  console.log("req body:", req.body)
   var datetime = new Date();
-  console.log(datetime);
+  console.log("staritng api", req.body)
+  console.log("staritng api", req.body['emotion'])
+
+  if(typeof req.body.posture == 'undefined' && req.body.emotion != "") {
+    glob['emotion']=req.body.emotion;
+    console.log("pushing emotion", req.body.emotion)
+  } else if (req.body.posture != ""){
+    if (req.body.posture == "good") {
+      glob['posture']=1;
+    } else {
+      glob['posture']=0;
+    }
+    console.log("pushing posture", req.body.posture)
+
+  }
   // console.log(util.inspect(req.body, false, null))
 
   res.json({"hello": "world! This is the openpose endpoint"});
@@ -76,13 +112,13 @@ app.post('/other', (req, res) => {
 
 
 
+
 app.use(logger);
 app.use(express.static(path.join(__dirname, 'build')));
-
 
 // app.use(allowCrossDomain);
 
 
-app.listen(3000, function() {
-  console.log('server stared on port 3000')
+http.listen(8000, function() {
+  console.log('server stared on port 8000')
 });

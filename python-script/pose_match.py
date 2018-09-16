@@ -9,6 +9,9 @@ a = np.array(a)
 b = np.array(b)
 
 def compare(a, b):
+    a = np.array([a[9,:], a[8,:], a[12,:], a[1,:], a[2,:], a[5,:], a[0,:], a[15,:], a[16,:]])
+    b = np.array([b[9,:], b[8,:], b[12,:], b[1,:], b[2,:], b[5,:], b[0,:], b[15,:], b[16,:]])
+
     a[np.abs(a) < 1e-10] = 0
     b[np.abs(b) < 1e-10] = 0
 
@@ -70,7 +73,7 @@ def compare(a, b):
                 angles.append(np.abs(findAnglesBetweenTwoVectors1(a[i,:], a[j,:]) - findAnglesBetweenTwoVectors1(b[i,:], b[j,:])))
         return angles
 
-    return (len([x for x in findDifferenceInAngles(bNormalized, transformNormalized) if x > 0.3]), len([x for x in findDistances(bNormalized, transformNormalized) if x > 0.2]))
+    return (len([x for x in findDifferenceInAngles(bNormalized, transformNormalized) if x > 0.15]), len([x for x in findDistances(bNormalized, transformNormalized) if x > 0.2]))
 
 # plt.plot(a.T[0], a.T[1], 'o', label="a")
 # plt.plot(bNormalized.T[0], bNormalized.T[1], 'o', label="b")

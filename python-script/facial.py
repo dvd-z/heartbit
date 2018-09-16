@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from keras.preprocessing import image
 from openpose_webcam import *
-# from websocket import create_connection
+from socketIO_client import SocketIO, LoggingNamespace
 
 #-----------------------------
 #opencv initialization
@@ -19,7 +19,6 @@ model.load_weights('./data/facial_expression_model_weights.h5') #load weights
 #-----------------------------
 #socket setup
 
-# ws = create_connection("ws://40.76.211.223:8080/", subprotocols=["echo-protocol"])
 
 #-----------------------------
 
@@ -34,6 +33,8 @@ while(True):
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 	faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+	hasSentEmotion = False
 
 	#print(faces) #locations of detected faces
 
@@ -55,10 +56,13 @@ while(True):
 		max_index = np.argmax(predictions[0])
 		
 		emotion = emotions[max_index]
+		if not hasSentEmotion:
+			with SocketIO('40.76.211.223', 8001, LoggingNamespace) as socketIO:
+				socketIO.emit(emotion)
+				hasSentEmotion = True
 		
 		#write emotion text above rectangle
 		cv2.putText(img, emotion, (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2)
-		# ws.send(emotion)
 		
 		#process on detected face end
 		#-------------------------

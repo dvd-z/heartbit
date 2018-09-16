@@ -7,8 +7,7 @@
     "wipeColor": "#e91e63",
     "requestedPermissions": [
       "access_heart_rate",
-      "run_background",
-      "access_internet"
+      "run_background"
     ],
     "buildTargets": [
       "higgs",

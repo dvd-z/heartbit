@@ -60,17 +60,20 @@ def openPoseWebcam(img):
     # print(keypoints)
 
     if (keypoints.shape[0] > 0 and keypoints[0].shape == a.shape):
-        (b1, b2) = compare(keypoints[0], bad)
-        (g11, g12) = compare(keypoints[0], good)
-        (g21, g22) = compare(keypoints[0], good2)
-        (g31, g32) = compare(keypoints[0], good3)
-        (g41, g42) = compare(keypoints[0], good4)
-        (g51, g52) = compare(keypoints[0], good5)
-        if (6 < g11 + g12 and 6 < g21 + g22 and 6 < g41 + g42):
-            requests.post("http://40.76.211.223:3000/openpose", {"posture": "bad"})
+        # (b1, b2) = compare(keypoints[0], bad)
+        (g11, g12) = compare(keypoints[0], good, 0.4, 0.4)
+        eyes1 = np.array([good[1,:],good[0,:],good[2,:],good[5,:],good[15,:],good[16,:]])
+        eyes2 = np.array([keypoints[0][1,:],keypoints[0][0,:],keypoints[0][2,:],keypoints[0][5,:],keypoints[0][15,:],keypoints[0][16,:]])
+        (g21, g22) = compare(eyes2, eyes1, 0.15, 0.45)
+        # (g21, g22) = compare(keypoints[0], good2)
+        # (g31, g32) = compare(keypoints[0], good3)
+        # (g41, g42) = compare(keypoints[0], good4)
+        # (g51, g52) = compare(keypoints[0], good5)
+        if (2 < g21 + g22 or 12 < g11 + g12):
+            requests.post("http://40.76.211.223:8000/openpose", {"posture": "bad"})
             print("bad")
         else:
-            requests.post("http://40.76.211.223:3000/openpose", {"posture": "good"})
+            requests.post("http://40.76.211.223:8000/openpose", {"posture": "good"})
             print("good ---------------")
 
     return output_image

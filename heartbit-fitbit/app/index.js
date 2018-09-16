@@ -33,9 +33,6 @@ hrm.onreading = function() {
       var parcel = {
         heartrates: heartrates
       }
-      console.log("Sent to companion!");
-      console.log("Parcel sent:");
-      console.log(parcel);
       messaging.peerSocket.send(parcel);
     } else {
       console.log("Failed to send to companion.");

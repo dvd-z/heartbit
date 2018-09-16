@@ -1,0 +1,22 @@
+{
+  "fitbit": {
+    "appUUID": "4d03eb94-f1c3-4f3c-8386-1de821124073",
+    "appType": "app",
+    "appDisplayName": "heartbit",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "#e91e63",
+    "requestedPermissions": [
+      "access_heart_rate",
+      "run_background"
+    ],
+    "buildTargets": [
+      "higgs",
+      "meson"
+    ],
+    "i18n": {
+      "en": {
+        "name": "heartbit"
+      }
+    }
+  }
+}

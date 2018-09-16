@@ -10,7 +10,7 @@ const util = require('util')
 
 var router = express.Router();
 
-glob = {"emotion": "", "posture": ""}
+glob = {"emotion": "", "posture": "", "heartrates": ""}
 
 io.on('connection', (client) => {
   console.log("connected")
@@ -24,6 +24,7 @@ io.on('connection', (client) => {
       client.emit('timer', glob);
       glob['emotion'] = ""
       glob['posture'] = ""
+      glob['heartrates'] = ""
     }, interval);
   });
   client.on('CH01', (x) => {
@@ -73,8 +74,8 @@ app.post('/fitbit', (req, res) => {
   var datetime = new Date();
   globalvar.push(req.body.heartrates)
   console.log(checkHeartRate());
-  console.log(req.body)
-
+  console.log("req body", req.body.heartrates)
+  glob['heartbeat'] = req.body.heartrates[0]
   res.json({"hello": "world! This is the fitbit endpoint"});
 });
 

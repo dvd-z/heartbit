@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var ema = require('exponential-moving-average');
+var io = require('socket.io')(server);
 
 const bodyParser = require('body-parser');
 const util = require('util')
@@ -72,6 +73,12 @@ app.post('/other', (req, res) => {
   res.json({"hello": "world! This is the other endpoint"});
 });
 
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('CH01', function (data) {
+    console.log("nice");
+  });
+});
 
 
 app.use(logger);

@@ -11,7 +11,8 @@
     "pm2": "^2.10.4",
     "request": "*",
     "util": "^0.11.0",
-    "websocket": "^1.0.26"
+    "websocket": "^1.0.26",
+    "ws": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

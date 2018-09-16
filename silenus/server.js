@@ -60,7 +60,7 @@ app.use(bodyParser.json());
 app.post('/fitbit', (req, res) => {
   var checkHeartRate = function() {
     temp = globalvar.slice(Math.max(globalvar.length - 20, 1))
-    resp = ema(temp, Math.min(globalvar.length, 20))
+    resp = ema(temp, Math.min(temp.length, 20))
     return parseInt(resp.slice(-1)[0]) > 100;
   }
 

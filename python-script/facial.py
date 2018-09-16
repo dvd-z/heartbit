@@ -1,8 +1,8 @@
 import numpy as np
 import cv2
+import requests
 from keras.preprocessing import image
 from openpose_webcam import *
-from socketIO_client import SocketIO, LoggingNamespace
 
 #-----------------------------
 #opencv initialization
@@ -57,9 +57,8 @@ while(True):
 		
 		emotion = emotions[max_index]
 		if not hasSentEmotion:
-			with SocketIO('40.76.211.223', 8001, LoggingNamespace) as socketIO:
-				socketIO.emit(emotion)
-				hasSentEmotion = True
+			requests.post("http://40.76.211.223:3000/openpose", {"emotion": emotion})
+			hasSentEmotion = True
 		
 		#write emotion text above rectangle
 		cv2.putText(img, emotion, (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2)
@@ -69,7 +68,7 @@ while(True):
 
 	cv2.imshow('img',img)
 
-	if cv2.waitKey(1) & 0xFF == ord('q'): #press q to quit
+	if cv2.waitKey(400) & 0xFF == ord('q'): #press q to quit
 		break
 
 #kill open cv things		

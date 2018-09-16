@@ -10,7 +10,17 @@ io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('meme', function(msg){
     console.log('message: ' + msg);
+    socket.emit('meme', msg, msg);
+    
+    client.on('subscribeToTimer', (interval) => {
+      console.log('client is subscribing to timer with interval ', interval);
+      // setInterval(() => {
+      //   glob = (Math.round(Math.random()*10))
+        client.emit('meme', msg);
+      // }, interval);
+    });
   });
+
 });
 
 http.listen(8001, function(){

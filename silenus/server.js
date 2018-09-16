@@ -10,14 +10,20 @@ const util = require('util')
 
 var router = express.Router();
 
-glob = {"emotion": "empty", "posture": "empty"}
+glob = {"emotion": "", "posture": ""}
 
 io.on('connection', (client) => {
   console.log("connected")
   client.on('subscribeToTimer', (interval) => {
     console.log('client is subscribing to timer with interval ', interval);
+    console.log("timer", glob)
+
     setInterval(() => {
+      console.log("timer", glob)
+
       client.emit('timer', glob);
+      glob['emotion'] = ""
+      glob['posture'] = ""
     }, interval);
   });
   client.on('CH01', (x) => {
@@ -60,7 +66,7 @@ app.use(bodyParser.json());
 app.post('/fitbit', (req, res) => {
   var checkHeartRate = function() {
     temp = globalvar.slice(Math.max(globalvar.length - 20, 1))
-    resp = ema(temp, Math.min(globalvar.length, 20))
+    resp = ema(temp, Math.min(temp.length, 20))
     return parseInt(resp.slice(-1)[0]) > 100;
   }
 
@@ -73,10 +79,22 @@ app.post('/fitbit', (req, res) => {
 });
 
 app.post('/openpose', (req, res) => {
-  console.log("req body:", req.body)
   var datetime = new Date();
-  console.log(datetime);
-  glob[Object.keys(req.body)[0]] = Object.values(req.body)[0]
+  console.log("staritng api", req.body)
+  console.log("staritng api", req.body['emotion'])
+
+  if(typeof req.body.posture == 'undefined' && req.body.emotion != "") {
+    glob['emotion']=req.body.emotion;
+    console.log("pushing emotion", req.body.emotion)
+  } else if (req.body.posture != ""){
+    if (req.body.posture == "good") {
+      glob['posture']=1;
+    } else {
+      glob['posture']=0;
+    }
+    console.log("pushing posture", req.body.posture)
+
+  }
   // console.log(util.inspect(req.body, false, null))
 
   res.json({"hello": "world! This is the openpose endpoint"});

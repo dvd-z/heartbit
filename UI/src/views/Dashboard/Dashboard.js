@@ -398,6 +398,8 @@ class Dashboard extends Component {
     this.subscribe = this.subscribe.bind(this);
 
     this.state = {
+      emotion:0,
+      posture:'Happy',
       dropdownOpen: false,
       radioSelected: 2,
       bodylang:[0],
@@ -417,7 +419,7 @@ class Dashboard extends Component {
         datasets: [
           {
             label: 'My First dataset',
-            backgroundColor: 'rgba(255,255,255,.3)',
+            backgroundColor: 'rgba(255,0,0,.3)',
             borderColor: 'transparent',
             // data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
           },
@@ -473,14 +475,23 @@ class Dashboard extends Component {
 
 
   }
-  subscribe(response) {
-    console.log(response)
+  subscribe(timestamp) {
+    console.log(timestamp.emotion)
+    console.log("ts posture", timestamp.posture)
+    // if ((timestamp.emotion) && timestamp.posture) {
+    //     return
+    // }
+
     // console.log("this.body", this.state, timestamp)
     var newbody = this.state.bodylang
+    console.log("ts posture", timestamp.posture, newbody)
+
+    console.log("newbody", newbody)
+
+    newbody.push(timestamp.posture)
     if (newbody.length > 8) {
         newbody.shift()
     }
-    newbody.push(response)
 
     // console.log("new body", newbody)
     var color1 = "rgba(255,255,255,.2)";
@@ -491,20 +502,24 @@ class Dashboard extends Component {
     var color3back = 'transparent';
     var color = ""
     var colorback = ""
+
     console.log(newbody)
-    if (response == "Smile") {
+    if (timestamp.emotion == "Smile") {
       color = color1;
       colorback = color1back;
-    } else if (response == "Anxious") {
+    } else if (timestamp.emotion == "Anxious") {
       color = color2;
       colorback = color2back;
-    } else {
+    } else if (timestamp.emotion == "Happy"){
       color = color3;
       colorback = color3back;
     }
 
+
     this.setState({
-      timestamp:timestamp,
+      emotion:timestamp.emotion,
+      posture:timestamp.posture,
+
       bodylang: newbody,
       cardChartData2: {
         // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug','','','','','','','','','','',''],
@@ -513,7 +528,7 @@ class Dashboard extends Component {
             label: 'My First dataset',
             backgroundColor: brandInfo,
             borderColor: 'rgba(255,255,255,.55)',
-            data: newbody,
+            data: newbody.slice(),
           },
         ],
       },
@@ -522,7 +537,7 @@ class Dashboard extends Component {
         datasets: [
           {
             label: 'My First dataset',
-            backgroundColor: colorback,
+            backgroundColor: 'rgba(255,0,0,.55)',
             borderColor: color,
             // data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
           },
@@ -574,6 +589,10 @@ class Dashboard extends Component {
       },
     });
     console.log(this.state.cardChartData2.datasets[0].data)
+    console.log("emotion", this.state.emotion)
+    console.log("posture", this.state.posture)
+
+
   }
 
 
@@ -599,7 +618,7 @@ class Dashboard extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col xs="12" sm="6" lg="6">
-            <Card className="text-white bg-info">
+            <Card className="text-white bg-danger">
               <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
                   <ButtonDropdown id='card1' isOpen={this.state.card1} toggle={() => { this.setState({ card1: !this.state.card1 }); }}>
@@ -615,7 +634,7 @@ class Dashboard extends Component {
                   </ButtonDropdown>
                 </ButtonGroup>
                 <div className="text-value">Body Language</div>
-                <div>  Confidence {this.state.timestamp}</div>
+                <div>  Confidence: {this.state.posture==1 ? "Ready" : "Uncertain"}</div>
               </CardBody>
               <div >
               <div className="chart-wrapper mx-3" style={{ height: '70px', paddingLeft:'5px' }} >
@@ -629,9 +648,9 @@ class Dashboard extends Component {
 
 
           <Col xs="12" sm="6" lg="6">
-            <FadeIn key={this.state.timestamp}>
+            <FadeIn key={this.state.emotion}>
 
-            <Card className={this.state.timestamp%3==0?"text-white bg-danger": this.state.timestamp%3==1 ? "text-white bg-warning" : "text-white bg-primary" }>
+            <Card className={this.state.emotion=="Sad"?"text-white bg-danger": this.state.emotion=="Anxious" ? "text-white bg-warning" : "text-white bg-primary" }>
               <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
                   <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
@@ -646,7 +665,7 @@ class Dashboard extends Component {
                   </ButtonDropdown>
                 </ButtonGroup>
                 <div className="text-value">Facial Expression</div>
-                <div>Mood</div>
+                <div>Mood: {this.state.emotion}</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                 <Bar data={this.state.cardChartData4} options={cardChartOpts4} height={70} />

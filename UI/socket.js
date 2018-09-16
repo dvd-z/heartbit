@@ -10,6 +10,13 @@ io.on('connection', (client) => {
       client.emit('timer', glob);
     }, interval);
   });
+  client.on('CH01' => {
+    console.log('choi ');
+    // setInterval(() => {
+    //   glob = (Math.round(Math.random()*10))
+    //   client.emit('timer', glob);
+    // }, interval);
+  });
 });
 
 const port = 8000;

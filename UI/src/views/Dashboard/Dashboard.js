@@ -307,7 +307,7 @@ var elements = 27;
 var data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 var mainChart = {
-  // labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+  labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
   datasets: [
     {
       label: 'Heartrates',
@@ -315,12 +315,12 @@ var mainChart = {
       borderColor: brandInfo,
       pointHoverBackgroundColor: '#fff',
       borderWidth: 2,
-      data: data
+      data: [70, 75, 81, 82, 76, 74, 82, 74, 82, 79, 81, 77, 84, 90, 88, 79, 83]
     }
   ],
 };
 
-const mainChartOpts = {
+var mainChartOpts = {
   tooltips: {
     enabled: false,
     custom: CustomTooltips,
@@ -350,7 +350,7 @@ const mainChartOpts = {
           beginAtZero: true,
           maxTicksLimit: 5,
           stepSize: Math.ceil(250 / 5),
-          max: 250,
+          max: 100,
         },
       }],
   },
@@ -500,7 +500,7 @@ class Dashboard extends Component {
     }
     data.pop();
     data.unshift(realheartrate);
-    mainChart.datasets[0].data = data;
+    // mainChart.datasets[0].data = data;
     // mainChart = {
     //   // labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
     //   datasets: [

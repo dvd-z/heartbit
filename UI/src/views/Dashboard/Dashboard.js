@@ -473,13 +473,14 @@ class Dashboard extends Component {
 
 
   }
-  subscribe(timestamp) {
+  subscribe(response) {
+    console.log(response)
     // console.log("this.body", this.state, timestamp)
     var newbody = this.state.bodylang
     if (newbody.length > 8) {
         newbody.shift()
     }
-    newbody.push(timestamp)
+    newbody.push(response)
 
     // console.log("new body", newbody)
     var color1 = "rgba(255,255,255,.2)";
@@ -491,10 +492,10 @@ class Dashboard extends Component {
     var color = ""
     var colorback = ""
     console.log(newbody)
-    if (timestamp%3 == 0) {
+    if (response == "Smile") {
       color = color1;
       colorback = color1back;
-    } else if (timestamp%3 == 1) {
+    } else if (response == "Anxious") {
       color = color2;
       colorback = color2back;
     } else {

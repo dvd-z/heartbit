@@ -400,6 +400,7 @@ class Dashboard extends Component {
     this.state = {
       emotion:0,
       posture:'Happy',
+      heartrates:123,
       dropdownOpen: false,
       radioSelected: 2,
       bodylang:[0],
@@ -516,10 +517,14 @@ class Dashboard extends Component {
     }
 
 
+    var realheartrate = this.state.heartrates
+    if (timestamp.heartrates) {
+      realheartrate = timestamp.heartrates;
+    }
     this.setState({
       emotion:timestamp.emotion,
       posture:timestamp.posture,
-
+      heartrates: realheartrate,
       bodylang: newbody,
       cardChartData2: {
         // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug','','','','','','','','','','',''],
@@ -681,7 +686,7 @@ class Dashboard extends Component {
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">HeartBit</CardTitle>
-                    <div className="small text-muted">Last 5 Minutes</div>
+                    <div className="small text-muted">Last Beats: {this.state.heartrates}</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>
